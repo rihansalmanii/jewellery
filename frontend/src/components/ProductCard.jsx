@@ -1,6 +1,11 @@
+import { Link } from "react-router-dom"
+
+
 const ProductCard = ({ product }) => {
   return (
-    <div className="bg-white flex flex-col ">
+    <>
+    <Link to={`/products/${product._id}`}>
+        <div className="bg-white flex flex-col ">
 
       {/* Image */}
       <div className="w-full h-58 bg-black">
@@ -26,12 +31,14 @@ const ProductCard = ({ product }) => {
         </p>
         </div>
       </div>
+    </div>
+    </Link>
 
-      {/* Button */}
-      <button className="bg-black text-white py-2 mt-2 font-semibold">
+    {/* Button */}
+      <button className="bg-black w-full text-white py-2 mt-2 font-semibold">
         ADD TO BAG
       </button>
-    </div>
+    </>
   );
 };
 

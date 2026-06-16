@@ -37,7 +37,7 @@ export default function Navbar() {
 
           {/* Logo */}
           <Link to="/" className="font-bold text-lg">
-            Krtika
+            Omkar
           </Link>
 
           {/* Desktop Nav */}

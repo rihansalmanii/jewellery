@@ -5,3 +5,8 @@ export const getAllProducts = async () => {
   return data;
 };
 
+export const getProductById = async (id) => {
+    const { data } = await api.get(`/products/${id}`)
+    return data;
+}
+

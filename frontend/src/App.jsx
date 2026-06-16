@@ -4,6 +4,7 @@ import Home from './Pages/Home'
 import Navbar from './components/common/Navbar'
 import AllProducts from './Pages/AllProducts'
 import Footer from './components/common/Footer'
+import ProductDetail from './Pages/ProductDetail'
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
       <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/products" element={<AllProducts />} />
+      <Route path='/products/:id' element={<ProductDetail />} />
 
     </Routes>
 

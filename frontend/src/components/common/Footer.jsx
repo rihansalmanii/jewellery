@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+
 export default function Footer() {
   return (
     <footer className="w-full bg-black font-sans text-white">
@@ -13,12 +14,12 @@ export default function Footer() {
             {/* Replace src with your actual logo asset path */}
             <span className="text-[10px] font-bold tracking-tighter text-gray-400 uppercase">Logo</span>
           </div>
-          <h2 className="text-2xl font-bold tracking-wide">Krtika Jeweller</h2>
+          <h2 className="text-2xl font-bold tracking-wide">Omkar Jeweller</h2>
         </div>
 
         {/* Brand Bio Narrative */}
         <p className="max-w-xl text-sm leading-relaxed text-gray-300 mb-6 font-medium">
-          Krtika Jeweller offers elegant women's jewellery crafted with fine quality and timeless designs, 
+          Omkar Jeweller offers elegant women's jewellery crafted with fine quality and timeless designs, 
           perfect to add charm, confidence, and a graceful touch to every look and occasion.
         </p>
 
@@ -44,10 +45,10 @@ export default function Footer() {
           </button>
           
           <div className="flex flex-col space-y-2.5 text-sm text-gray-300 font-medium">
-            <p><span className="text-white font-bold">Call:</span> +91 - 9560787898</p>
-            <p><span className="text-white font-bold">WhatsApp:</span> +91 - 9560787898</p>
+            <p><span className="text-white font-bold">Call:</span> +91 - 9876543210</p>
+            <p><span className="text-white font-bold">WhatsApp:</span> +91 - 9876543210</p>
             <p><span className="text-white font-bold">Customer Support Time:</span> 24/7</p>
-            <p><span className="text-white font-bold">Email:</span> kavyajewellers940@gmail.com</p>
+            <p><span className="text-white font-bold">Email:</span> abc@120@gmail.com</p>
             <p className="leading-relaxed max-w-lg">
               <span className="text-white font-bold">Address:</span> C-79 198 DB GUTTA ROAD, ARAMBAD, PAHARGANJ, Delhi, Central Delhi, 110055
             </p>

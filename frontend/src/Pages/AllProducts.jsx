@@ -20,7 +20,6 @@ const AllProducts = () => {
     fetchProducts()
   }, []);
 
-//   console.log("products: ",products)
 
   return (
     <div className="h-full w-full py-3">
