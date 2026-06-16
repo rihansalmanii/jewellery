@@ -6,14 +6,31 @@ const imageKitClient = new ImageKit({
 })
 
 const upload = async (file) => {
-    const result = await imageKitClient.files.upload({
+   try {
+     const result = await imageKitClient.files.upload({
         file: file.buffer.toString('base64'),
         fileName: "img_"+Date.now(),
-        folder: "jewellery-backend/images"
+        folder: "jewellery-backend/images",
+        useUniqueFileName: true
     })
     
     return result;
+   } catch(err) {
+    console.log("Error uploading file:", err.message)
+    throw err;
+   }
 
 }
 
-module.exports = { upload }
+const deleteFile = async (fileId) => {
+    try {
+        const result = await imageKitClient.files.delete(fileId)
+        console.log("File deleted successfully:", fileId);
+        return result;
+    } catch(error) {
+        console.log("Error deleting file:", error.message)
+        throw error;
+    }
+}
+
+module.exports = { upload, deleteFile }

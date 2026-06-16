@@ -1,5 +1,5 @@
 const productModel = require("../models/product.model");
-const { upload } = require("../services/imagekit.service");
+const { upload, deleteFile } = require("../services/imagekit.service");
 
 // add product
 const addProduct = async (req, res) => {
@@ -23,12 +23,16 @@ const addProduct = async (req, res) => {
     const files = req.files;
 
     if (!files || files.length == 0) {
-      res.status(400).json({ message: "please upload atleast one image" });
+      return res.status(400).json({ message: "please upload atleast one image" });
     }
 
 
     const results = await Promise.all(files.map((file) => upload(file)));
-    const uploadedFiles = results.map((r) => r.url);
+
+    const uploadedFiles = results.map((r) => ({
+      url: r.url,
+      fileId: r.fileId
+    }));
 
 
     if (isNaN(originalPrice) || isNaN(salePrice) || isNaN(quantity)) {
@@ -38,9 +42,9 @@ const addProduct = async (req, res) => {
     const newProduct = await productModel.create({
       name: name,
       description: description,
-      originalPrice: originalPrice,
-      salePrice: salePrice,
-      quantity: quantity,
+      originalPrice: Number(originalPrice),
+      salePrice: Number(salePrice),
+      quantity: Number(quantity),
       category: category,
       images: uploadedFiles,
     });
@@ -50,16 +54,16 @@ const addProduct = async (req, res) => {
       newProduct,
     });
   } catch (err) {
-    res.status(500).json({ message: "error in creating product" + err });
+    res.status(500).json({ message: err.message});
   }
 };
 
-// get all products
 
+// get all products
 const getAllProducts = async (req, res) => {
   try {
     const products = await productModel.find();
-    if(!products) {
+    if(products.length == 0) {
         return res.status(404).json({ message: "no products found" });
     }
 
@@ -72,8 +76,8 @@ const getAllProducts = async (req, res) => {
   }
 };
 
-// get product by id
 
+// get product by id
 const getProductById = async (req, res) => {
   const id = req.params.id;
 
@@ -93,31 +97,65 @@ const getProductById = async (req, res) => {
   }
 };
 
-// update product
 
-const updateProduct = async (req, res) => {
+// update product
+const updateProductById = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const updatedProduct = await productModel.findByIdAndUpdate(id, req.body, {
-      new: true,
-    });
+    const product = await productModel.findById(id)
 
-    if (!updatedProduct) {
-      return res.status(404).json({ message: "product not found" });
+    if(!product) {
+      return res.status(404).json({message: "product not found"})
     }
 
+
+    const updatedData = {...req.body}
+
+
+    Object.keys(updatedData).forEach((key) => {
+      if(updatedData[key] !== undefined) {
+        product[key] = updatedData[key]
+      }
+    })
+
+
+    if(req.files && req.files.length > 0) {
+
+      // deleting old images from imagekit
+      if(product.images && product.images.length > 0) {
+        await Promise.all(
+          product.images.map((img) => deleteFile(img.fileId))
+        )
+      }
+
+      // uploading new images to imagekit
+      const uploadedImages = await Promise.all(
+        req.files.map((img) => upload(img))
+      )
+
+      product.images = uploadedImages.map((img) => ({
+        url: img.url,
+        fileId: img.fileId
+      }))
+    }
+
+    
+    await product.save()
+
     res.status(200).json({
-      message: "product updated successfully",
-      product: updatedProduct,
-    });
+      success: true,
+      message: "product update successfully",
+      product
+    })
+
   } catch (err) {
-    res.status(500).json({ message: "error in updating product" });
+    res.status(500).json({ message: "error in updating product"+err });
   }
 };
 
-// delete product
 
+// delete product
 const deleteProduct = async (req, res) => {
   const id = req.params.id;
 
@@ -125,7 +163,7 @@ const deleteProduct = async (req, res) => {
     const deleted = await productModel.findByIdAndDelete(id);
 
     if (!deleted) {
-      res.status(404).json({ message: "product not found" });
+      return res.status(404).json({ message: "product not found" });
     }
 
     res.status(200).json({
@@ -136,10 +174,11 @@ const deleteProduct = async (req, res) => {
   }
 };
 
+
 module.exports = {
   addProduct,
   getAllProducts,
   getProductById,
-  updateProduct,
+  updateProductById,
   deleteProduct,
 };
