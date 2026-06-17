@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom"
+import { useCart } from "../contexts/CartContext";
 
 
 const ProductCard = ({ product }) => {
+
+  const { addToCart } = useCart();
+
   return (
     <>
     <Link to={`/products/${product._id}`}>
@@ -35,7 +39,8 @@ const ProductCard = ({ product }) => {
     </Link>
 
     {/* Button */}
-      <button className="bg-black w-full text-white py-2 mt-2 font-semibold">
+      <button className="bg-black w-full text-white py-2 mt-2 font-semibold"
+        onClick={() => addToCart(product)}>
         ADD TO BAG
       </button>
     </>

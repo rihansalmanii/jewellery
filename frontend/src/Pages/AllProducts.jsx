@@ -6,6 +6,7 @@ const AllProducts = () => {
     
     const [products, setProducts] = useState([])
 
+
   useEffect(() => {
     const fetchProducts = async () => {
         try {

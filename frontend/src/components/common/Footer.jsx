@@ -22,6 +22,7 @@ export default function Footer() {
           Omkar Jeweller offers elegant women's jewellery crafted with fine quality and timeless designs, 
           perfect to add charm, confidence, and a graceful touch to every look and occasion.
         </p>
+        
 
         {/* Social Link Utilities */}
         <div className="flex items-center gap-6 mb-8 text-xl">

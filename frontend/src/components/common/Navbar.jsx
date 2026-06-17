@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { LuSearch } from "react-icons/lu";
 import { BsHandbag } from "react-icons/bs";
+import { useCart } from '../../contexts/CartContext';
 
 
 
@@ -9,6 +10,9 @@ export default function Navbar() {
   
 
   const navItems = ['HOME', 'BRACELET', 'BANGLE', 'NEW ARRIVALS', 'ALL PRODUCTS'];
+  const { cartItems } = useCart();
+
+  console.log("navbar:", cartItems);
 
   const getPath = (item) => {
     if (item === 'HOME') return '/';
@@ -50,8 +54,12 @@ export default function Navbar() {
           </ul>
 
           {/* Right Side (Cart) */}
-          <div className="flex items-center gap-4">
-            <BsHandbag size={22}/>
+          <div className="flex items-center gap-4 relative">
+            <Link to="/bag"><BsHandbag size={22}/></Link>
+
+            <div className='absolute z-50 bg-red-500 text-white text-[10px] font-semibold rounded-full h-3.5 w-3.5 -right-1 -bottom-1 flex items-center justify-center'>
+              <p>{cartItems.length}</p>
+            </div>
           </div>
         </div>
       </header>
