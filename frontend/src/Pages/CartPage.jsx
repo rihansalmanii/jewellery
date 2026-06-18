@@ -2,6 +2,7 @@ import React from 'react'
 import { useCart } from '../contexts/CartContext'
 import NoItems from '../components/cart/NoItems'
 import CartItemCard from '../components/cart/CartItemCard'
+import CartCheckout from '../components/cart/CartCheckout'
 
 
 
@@ -22,9 +23,7 @@ const CartPage = () => {
         <CartItemCard key={item._id} item={item} removeFromCart={removeFromCart} />
       ))}
       </div>
-      <div className='fixed bottom-0 bg-[#F7F7F7] w-full py-6'>
-        <button>Checkout</button>
-      </div>
+      <CartCheckout />
     </div>
   )
 }
