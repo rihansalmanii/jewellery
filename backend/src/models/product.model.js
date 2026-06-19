@@ -33,7 +33,11 @@ const productSchema = new mongoose.Schema({
       url: String,
       fileId: String
     }
-  ]
+  ],
+  size: {
+    type: String,
+    defaule: "Free Size"
+  }
 });
 
 module.exports = mongoose.model("Product", productSchema);
