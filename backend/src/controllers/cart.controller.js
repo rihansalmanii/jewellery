@@ -1,26 +1,78 @@
 const cartModel = require('../models/cart.model')
 
 const addToCart = async (req, res) => {
-    const {userId, productId, quantity} = req.body;
+    const userId = req.user._id
+    const {productId, quantity} = req.body;
 
     try {
         const cart = await cartModel.findOne({userId});
 
         if(!cart) {
-            return res.status(404).json({message: "cart not found"});
+            const newCart = await cartModel.create({
+                user: userId,
+                items: [{
+                    productId,
+                    quantity
+                }] 
+            })
+            return res.status(201).json({cart})
         }
 
-        const product = cart.items.find(item => item.product.toString() === productId);
+        const itemIndex = cart.items.findIndex((item) => item.productId.toString() === productId);
 
-        if(product) {
-            product.quantity += quantity;
+        if(itemIndex !== -1) {
+            cart.items[itemIndex].quantity += 1;
         } else {
-            cart.items.push({product: productId, quantity});
+            cart.items.push({
+                productId,
+                quantity
+            })
         }
 
-        await cart.save();
-        res.status(200).json({message: "product added to cart successfully"});
-    } catch (err) {
-        res.status(500).json({message: "error in adding product to cart"});
+        await cart.save()
+
+        return res.status(200).json({
+            message: "product added successfully",
+            newart
+        })
+
+
+    } catch(err) {
+        res.status(500).json({message: "error in adding product to cart"})
     }
 }
+
+const getCart = async (req, res) => {
+
+}
+
+
+module.exports = {addToCart}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,9 +1,11 @@
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
+const userModel = require('../models/user.model.js')
 
-const authAdmin = async (req, res, next) => {
+const authUser = async (req, res, next) => {
     
     const token = req.cookies.token;
+    try {
     
     if(!token) {
         return res.status(401).json({
@@ -11,7 +13,6 @@ const authAdmin = async (req, res, next) => {
         })
     }
 
-    try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
         const user = await userModel.findById(decoded.id);
@@ -20,19 +21,15 @@ const authAdmin = async (req, res, next) => {
                 message: "user not found"
             })
         }
-
-        if(user.role !== "admin") {
-            return res.status(401).json({
-                message: "unauthorized"
-            })
-        }
-
+        
         req.user = user;
         next();
 
     } catch(err) {
         return res.status(401).json({
-            message: "Invalid or expired token"
+            message: "message from auth middleware"
         })
     }
 }
+
+module.exports = {authUser}
