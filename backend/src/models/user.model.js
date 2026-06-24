@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema(
       minlength: 6,
     },
 
-    // optional (you can use later)
+    // optional (we can use later)
     phone: {
       type: String,
     },

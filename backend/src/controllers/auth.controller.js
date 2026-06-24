@@ -49,6 +49,7 @@ const registerUser = async (req, res) => {
   }
 };
 
+
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -93,6 +94,7 @@ const loginUser = async (req, res) => {
     res.status(500).json({ message: "error in logging in user" });
   }
 };
+
 
 const logout = (req, res) => {
   
