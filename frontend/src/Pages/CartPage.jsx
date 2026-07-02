@@ -14,7 +14,7 @@ const CartPage = () => {
 
 
   return (
-    <div>
+    <div className='pb-30'>
         <div>
             <h1 className='text-xl font-semibold text-[#4C4C4C] px-5 py-10'>MY BAG</h1>
         </div>
