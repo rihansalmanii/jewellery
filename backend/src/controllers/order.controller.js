@@ -148,10 +148,11 @@ const getAllOrders = async (req, res) => {
 // update order status 
 const updateOrderStatus = async (req, res) => {
     try {
-        const {orderId, status} = req.body;
+        const orderId = req.params.id;
+        const {status} = req.body;
 
         // validate inputs
-        if(!orderId || status) {
+        if(!orderId || !status) {
             return res.status(400).json({
                 success: false,
                 message: "orderId and status are required"
@@ -167,7 +168,7 @@ const updateOrderStatus = async (req, res) => {
             })
         }
 
-        const order = orderModel.findById({orderId})
+        const order = await orderModel.findById(orderId)
 
         if(!order) {
             return res.status(404).json({
@@ -234,4 +235,4 @@ const updateOrderStatus = async (req, res) => {
     }
 }
 
-module.exports = { createOrder, getMyOrders, getOrderById, getAllOrders }
+module.exports = { createOrder, getMyOrders, getOrderById, getAllOrders, updateOrderStatus }
