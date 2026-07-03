@@ -27,10 +27,16 @@ const createOrder = async (req, res) => {
             return res.status(400).json({message: "invalid product or quatity"})
         }
 
+        
+
         const product = await productModel.findById(productId);
 
         if(!product) {
             return res.status(404).json({message: "product not found"})
+        }
+
+        if(product.stock < quantity) {
+            return res.status(400).json({message: `only ${product.stock} items left in stock for ${product.name}`})
         }
 
         const itemTotal = product.salePrice * quantity;
@@ -55,6 +61,7 @@ const createOrder = async (req, res) => {
             orderStatus: "pending",
             address
         })
+    
 
         res.status(201).json({
             message: "order created successfully",
@@ -133,6 +140,95 @@ const getAllOrders = async (req, res) => {
         res.status(200).json({orders})
     } catch(err) {
         res.status(500).json({
+            message: err.message
+        })
+    }
+}
+
+// update order status 
+const updateOrderStatus = async (req, res) => {
+    try {
+        const {orderId, status} = req.body;
+
+        // validate inputs
+        if(!orderId || status) {
+            return res.status(400).json({
+                success: false,
+                message: "orderId and status are required"
+            })
+        }
+
+        const validStatuses = ["pending", "confirmed", "paid", "shipped", "delivered", "cancelled"]
+
+        if(!validStatuses.includes(status)) {
+            return res.status(400).json({
+                success: false,
+                message: "status value is invalid"
+            })
+        }
+
+        const order = orderModel.findById({orderId})
+
+        if(!order) {
+            return res.status(404).json({
+                success: false,
+                message: "order not found"
+            })
+        }
+
+        if(order.status === "delivered") {
+            return res.status(400).json({
+                success: false,
+                message: "order already delivered"
+            })
+        }
+
+        if(order.status === "cancelled") {
+            return res.status(400).json({
+                success: false,
+                message: "cancelled orders cannot be updated"
+            })
+        }
+ 
+        // stock reduction logic
+        if(status === "confirmed" && order.status !== "confirmed") {
+
+            // validating each product in order 
+            for(let item of order.items) {
+                const product = await productModel.findById(item.product)
+
+                if(!product) {
+                    return res.status(404).json({
+                        success: false,
+                        message: "product not found"
+                    })
+                }
+
+                if(product.stock < item.quantity) {
+                    return res.status(400).json({
+                        success: false,
+                        message: `${product.name} is out of stock`
+                    })
+                }
+
+                product.stock -= item.quantity;
+                await product.save()
+            }
+        }
+
+        order.status = status
+        await order.save()
+
+        return res.status(200).json({
+            success: true,
+            message: "order status updated successfully",
+            order
+        })
+
+
+    } catch(err) {
+        return res.status(400).json({
+            success: false,
             message: err.message
         })
     }
