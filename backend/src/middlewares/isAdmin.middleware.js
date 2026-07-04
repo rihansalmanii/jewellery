@@ -16,7 +16,7 @@ const isAdmin = async (req, res, next) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
         const user = await userModel.findById(decoded.id)
 
-        if(!user.isAdmin) {
+        if(!user.role !== "admin") {
             return res.status(401).json({
                 message: "not admin"
             })

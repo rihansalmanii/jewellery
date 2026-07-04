@@ -7,7 +7,11 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      role: ["user", "admin"],
+      role: {
+        type: String,
+        enum:["user", "admin"],
+        default: "user",
+      },
       default: "user",
     },
 
@@ -28,11 +32,6 @@ const userSchema = new mongoose.Schema(
     // optional (we can use later)
     phone: {
       type: String,
-    },
-
-    isAdmin: {
-      type: Boolean,
-      default: false,
     },
   },
   { timestamps: true }
