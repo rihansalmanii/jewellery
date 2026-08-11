@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import  { Routes, Route, useLocation } from 'react-router-dom'
 import Home from './Pages/Home'
 import Navbar from './components/common/Navbar'
@@ -6,11 +6,21 @@ import AllProducts from './Pages/AllProducts'
 import Footer from './components/common/Footer'
 import ProductDetail from './Pages/ProductDetail'
 import CartPage from './Pages/CartPage'
+import Admin from './Pages/Admin'
 
 
 const App = () => {
 
   const location = useLocation()
+  const [isAdmin, setIsAdmin] = useState(true)
+
+  if(isAdmin) {
+    return (
+      <Routes>
+        <Route path='/admin' element={<Admin />}/>
+      </Routes>
+    )
+  }
 
   return (
     <>

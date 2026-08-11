@@ -12,7 +12,7 @@ const AllProducts = () => {
         try {
             const data = await getAllProducts()
             setProducts(data.products)
-            // console.log(data.products)
+            console.log(data.products)
             
         } catch(err) {
             console.log(err.message)
