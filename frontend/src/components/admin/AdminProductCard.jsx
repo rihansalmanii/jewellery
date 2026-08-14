@@ -7,7 +7,7 @@ import { useCart } from "../../contexts/CartContext";
 const AdminProductCard = (props) => {
   return (
     <div className="w-full">
-          <div className="mx-auto flex gap-2 px-4 py-5 h-[187.6px] w-[350.4px] border border-gray-200">
+          <div className="mx-auto flex gap-2 px-4 py-5 h-[187.6px] w-[350.4px] border shadow-md rounded-lg border-gray-200">
             <div>
               <img
                 src={props.item.images?.[0]?.url}
