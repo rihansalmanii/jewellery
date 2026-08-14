@@ -5,7 +5,7 @@ require("dotenv").config();
 
 const registerUser = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, role } = req.body;
 
     const isUserExists = await userModel.findOne({ email });
 
@@ -19,6 +19,7 @@ const registerUser = async (req, res) => {
       username,
       email,
       password: hash,
+      role: role || "user"
     });
 
     const token = jwt.sign(
@@ -34,7 +35,7 @@ const registerUser = async (req, res) => {
     res.cookie("token", token, {
         httpOnly: true,
         secure: false, // true in production
-        sameSite: strict
+        sameSite: "strict"
     });
 
     const userWithoutPassword = user.toObject();
@@ -45,7 +46,7 @@ const registerUser = async (req, res) => {
       user: userWithoutPassword,
     });
   } catch (err) {
-    res.status(500).json({ message: "error in registering user" });
+    res.status(500).json({ message: err.message });
   }
 };
 
@@ -85,6 +86,8 @@ const loginUser = async (req, res) => {
 
     const userWithoutPassword = user.toObject();
     delete userWithoutPassword.password;
+
+    console.log(user.role)
 
     res.status(200).json({
       message: `user logged in successfully, ${user.username}`,

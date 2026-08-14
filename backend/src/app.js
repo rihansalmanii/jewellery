@@ -9,7 +9,10 @@ const orderRoutes = require('./routes/order.routes')
 // const cartRoutes = require('./routes/cart.routes')
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true
+}));
 app.use(cookieParser())
 
 
