@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import  { Routes, Route, useLocation } from 'react-router-dom'
+import { Routes, Route, useLocation } from 'react-router-dom'
+
 import Home from './Pages/Home'
 import Navbar from './components/common/Navbar'
 import AllProducts from './Pages/AllProducts'
@@ -7,36 +8,33 @@ import Footer from './components/common/Footer'
 import ProductDetail from './Pages/ProductDetail'
 import CartPage from './Pages/CartPage'
 import Admin from './Pages/Admin'
-
+import AdminLoginPage from './Pages/AdminLoginPage'
 
 const App = () => {
-
   const location = useLocation()
-  const [isAdmin, setIsAdmin] = useState(true)
+  const [user, setUser] = useState(null)
 
-  if(isAdmin) {
-    return (
-      <Routes>
-        <Route path='/admin' element={<Admin />}/>
-      </Routes>
-    )
-  }
+  const isAdminRoute = location.pathname.startsWith("/admin")
 
   return (
     <>
-    <Navbar />
-    <div className='pb-14'>
-      <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/products" element={<AllProducts />} />
-      <Route path='/products/:id' element={<ProductDetail />} />
-      <Route path='/bag' element={<CartPage />} />
+      {!isAdminRoute && <Navbar />}
 
-    </Routes>
+      <div className={!isAdminRoute ? "pb-14" : ""}>
+        <Routes>
+          {/* USER ROUTES */}
+          <Route path="/" element={<Home />} />
+          <Route path="/products" element={<AllProducts />} />
+          <Route path="/products/:id" element={<ProductDetail />} />
+          <Route path="/bag" element={<CartPage />} />
 
+          {/* ADMIN ROUTES */}
+          <Route path="/admin" element={<AdminLoginPage />} />
+          <Route path="/admin/products" element={<Admin />} />
+        </Routes>
+      </div>
 
-    {location.pathname !== "/bag" && <Footer />}
-    </div>
+      {!isAdminRoute && location.pathname !== "/bag" && <Footer />}
     </>
   )
 }
