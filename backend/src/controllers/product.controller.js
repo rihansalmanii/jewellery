@@ -4,7 +4,7 @@ const { upload, deleteFile } = require("../services/imagekit.service");
 // add product
 const addProduct = async (req, res) => {
   try {
-    const { name, description, originalPrice, salePrice, quantity, category } =
+    const { name, description, originalPrice, salePrice, stock, category } =
       req.body;
 
     if (
@@ -12,7 +12,7 @@ const addProduct = async (req, res) => {
       !description ||
       !originalPrice ||
       !salePrice ||
-      !quantity ||
+      !stock ||
       !category
     ) {
       return res.status(400).json({
@@ -35,7 +35,7 @@ const addProduct = async (req, res) => {
     }));
 
 
-    if (isNaN(originalPrice) || isNaN(salePrice) || isNaN(quantity)) {
+    if (isNaN(originalPrice) || isNaN(salePrice) || isNaN(stock)) {
       return res.status(400).json({ message: "please enter valid numbers" });
     }
 
@@ -44,7 +44,7 @@ const addProduct = async (req, res) => {
       description: description,
       originalPrice: Number(originalPrice),
       salePrice: Number(salePrice),
-      quantity: Number(quantity),
+      stock: Number(stock),
       category: category,
       images: uploadedFiles,
     });
