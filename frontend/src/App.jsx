@@ -9,6 +9,7 @@ import ProductDetail from './Pages/ProductDetail'
 import CartPage from './Pages/CartPage'
 import Admin from './Pages/Admin'
 import AdminLoginPage from './Pages/AdminLoginPage'
+import AdminAddProduct from './components/admin/AdminAddProduct'
 
 const App = () => {
   const location = useLocation()
@@ -31,6 +32,8 @@ const App = () => {
           {/* ADMIN ROUTES */}
           <Route path="/admin" element={<AdminLoginPage />} />
           <Route path="/admin/products" element={<Admin />} />
+          <Route path="/admin/products/add" element={<AdminAddProduct />} />
+          <Route path="/admin/products/edit/:id" element={<Admin />} />
         </Routes>
       </div>
 

@@ -23,7 +23,8 @@ const AdminProductCard = (props) => {
                 <p className="text-xs">{props.item.size}</p>
               </div>
                <div className="flex items-center justify-between gap-7 px-2">
-                <button className="border px-5 py-1">Edit</button>
+                <button className="border px-5 py-1" 
+                onClick={() => props.handleEdit(props.item)}>Edit</button>
                 <button className="border px-5 py-1">Delete</button>
             </div>
             </div>
