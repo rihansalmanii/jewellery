@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { getAllProducts } from "../services/ProductService";
+import { deleteProduct, getAllProducts } from "../services/ProductService";
 import CartItemCard from "../components/cart/CartItemCard";
 import AdminProductCard from "../components/admin/AdminProductCard";
 
 import { MdOutlineLogout } from "react-icons/md";
 import { logout } from "../services/auth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import EditProductModal from "../components/admin/EditProductModal";
+import { AdminNoProducts } from "../components/admin/AdminNoProducts";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -24,6 +25,10 @@ const Admin = () => {
 
     getProducts();
   }, [refetch]);
+
+  setTimeout(() => {
+    setrefetch(false)
+  }, 2000);
 
   console.log(products);
 
@@ -43,8 +48,18 @@ const Admin = () => {
     setShowEditModal(true);
   };
 
+  const handleDelete = async (id) => {
+    try {
+      const res = await deleteProduct(id);
+      console.log(res);
+      setrefetch(true);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
-    <div className="h-[60dvh] w-full px-5 mb-10">
+    <div className="h-full w-full px-5 mb-10">
       <div className="flex items-center justify-between">
         <div className="flex flex-col pt-10 pb-5 gap-1">
           <h1 className="text-2xl font-semibold">Admin Panel</h1>
@@ -61,15 +76,22 @@ const Admin = () => {
         </div>
       </div>
       <div className="text-center bg-black text-white rounded-md font-semibold border w-full mx-auto py-2">
-        <button onClick={() => navigate("/admin/products/add")}>Add Product</button>
+        <button onClick={() => navigate("/admin/products/add")}>
+          Add Product
+        </button>
       </div>
       <div className="w-full h-0.5 bg-[#cbcaca] mt-5"></div>
       <div className="mt-5">
         <h2 className="text-lg font-semibold">All Products:</h2>
+        {products.length == 0 && <AdminNoProducts />}
         <div className="flex flex-col gap-3">
           {products.map((item, idx) => (
             <div key={idx}>
-              <AdminProductCard item={item} handleEdit={handleEdit} />
+              <AdminProductCard
+                item={item}
+                handleEdit={handleEdit}
+                handleDelete={handleDelete}
+              />
             </div>
           ))}
         </div>

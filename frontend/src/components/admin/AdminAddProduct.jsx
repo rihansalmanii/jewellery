@@ -138,9 +138,9 @@ const AdminAddProduct = () => {
             />
           </div>
 
-          {/* Quantity */}
+          {/* Stock */}
           <div>
-            <label className="mb-1 block text-sm font-medium">Quantity</label>
+            <label className="mb-1 block text-sm font-medium">Stock</label>
 
             <input
               type="number"

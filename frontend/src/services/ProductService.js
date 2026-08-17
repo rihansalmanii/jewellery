@@ -22,7 +22,7 @@ export const addProduct = async (formData) => {
 };
 
 export const deleteProduct = async (id) => {
-  const { data } = await api.delete("/products/delete-product/:id");
+  const { data } = await api.delete(`/products/delete-product/${id}`);
 
   return data;
 };
