@@ -50,6 +50,7 @@ const AdminAddProduct = () => {
     try {
       const res = await addProduct(data);
       console.log(res);
+      navigate("/admin/products");
     } catch (err) {
       console.log(err);
     }
